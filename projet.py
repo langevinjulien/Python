@@ -17,7 +17,6 @@ def unpickle(file):
         dict = pickle.load(fo, encoding='bytes')
     return dict
 
-#/!!!\ Important : penser à changer les chemins aux lignes 23,24,31,132,141,138
     
 #Importation des échantillons train et test
 train = unpickle('C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/cifar-100-python/train')
@@ -90,7 +89,7 @@ idx = np.random.randint(47501, size=500)
 train_X_non_humains_und=train_X_non_humains[idx,:]  #Sur les explicatives
 train_Y_non_humains_und=train_Y_non_humains[idx]    #Sur la variable expliquée
 
-trainY=np.concatenate((train_Y_non_humains_und, train_Y_humains, train_Y_humains),axis=None)
+trainY=np.concatenate((train_Y_non_humains_und, train_Y_humains),axis=None)
 trainX=np.concatenate((np.array(train_X_non_humains_und), np.array(train_X_humains), np.array(train_X_humains)), axis=0)
 
 ##Transformation des noms de classes en vecteur
