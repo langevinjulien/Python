@@ -70,18 +70,35 @@ for i in range(10000):
     else:
         test_Y[i]=5
 
-train_Y[1]
-test_Y
 
-##Transfation des noms de classes en vecteur
-#Les noms de classe sont représentés par des entiers (ex: classe 'cat' = 1)
+#Récupérer la liste des éléments humains
+humains = [x for x in range(len(train_Y)) if train_Y[x] != 5]
+#Table des humains
+c=np.array(train_Y)
+d=np.array(train_X)
+train_Y_humains=c[humains]
+train_X_humains=d[humains]
+
+#Récupérer la liste des éléments humains non-humains
+non_humains=[i for i, n in enumerate(train_Y) if n == 5]
+train_Y_non_humains=c[non_humains]
+train_X_non_humains=d[non_humains]
+
+##Undersampling
+#Echantillon train de départ (50000 obs): 5% humains (2500 obs) / 95% de non-humains (47500 obs)
+idx = np.random.randint(47501, size=500) 
+train_X_non_humains_und=train_X_non_humains[idx,:]  #Sur les explicatives
+train_Y_non_humains_und=train_Y_non_humains[idx]    #Sur la variable expliquée
+
+trainY=np.concatenate((train_Y_non_humains_und, train_Y_humains, train_Y_humains),axis=None)
+trainX=np.concatenate((np.array(train_X_non_humains_und), np.array(train_X_humains), np.array(train_X_humains)), axis=0)
+
+##Transformation des noms de classes en vecteur
+#Les noms de classe sont représentés par des entiers (ex: classe 'garçon' = 1)
 #On les transforme en vecteur (ex: classe 'cat' = [1 0 0 0 ...])
 lb = LabelBinarizer()
-train_Y = lb.fit_transform(train_Y)
+trainY = lb.fit_transform(trainY)
 test_Y= lb.transform(test_Y)
-print(train_Y) 
-print(test_Y)
-
 
 ## Architecture du réseau 3072-1024-512-20
 model = Sequential()
@@ -91,7 +108,7 @@ model.add(Dense(1024, input_shape=(3072,), activation="sigmoid"))
 model.add(Dense(512, activation="sigmoid"))
 #model.add(Flatten())
 #Troisième couche: 512 neurones, fonction d'activation: softmax
-model.add(Dense(len(lb.classes_), activation="softmax"))         #ici len(lb.classes_)=20 car 20 superclasses
+model.add(Dense(len(lb.classes_), activation="softmax"))         #ici len(lb.classes_)=6 car 6 classes
 
 #initialisation du taux d'apprentissage
 init_tapp = 0.01
@@ -105,9 +122,8 @@ model.compile(loss="categorical_crossentropy", optimizer=opt, #fonction de perte
               metrics=["accuracy"]) 
 
 ##Entraînement du modèle 
-H = model.fit(train_X, train_Y, validation_data=(test_X, test_Y), epochs=epochs, batch_size=32)
-#ordi Julien: 30 minutes
-#A essayer avec des batch size plus élevés
+H = model.fit(trainX, trainY, validation_data=(test_X, test_Y), epochs=epochs, batch_size=32)
+#A essayer avec des batch size moins élevés
 
 
 ##Evaluation du modèle
