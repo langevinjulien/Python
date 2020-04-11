@@ -25,9 +25,9 @@ def unpickle(file):
     return cifar_dict
 
 
-meta = unpickle('C:/Users/canou/Documents/Master 2/Semestre 2/Intro Python et ML/Projet/cifar-100-python/meta')
-train = unpickle('C:/Users/canou/Documents/Master 2/Semestre 2/Intro Python et ML/Projet/cifar-100-python/train')
-test = unpickle('C:/Users/canou/Documents/Master 2/Semestre 2/Intro Python et ML/Projet/cifar-100-python/test')
+meta = unpickle('C:/CIFAR100/meta')
+train = unpickle('C:/CIFAR100/train')
+test = unpickle('C:/CIFAR100/test')
 
 fine_label_names=[t.decode('utf8') for t in meta[b'fine_label_names']]
 
@@ -83,7 +83,7 @@ new_var.count(1)
 #nous avons choisi de faire du SMOTE.
 
                                          #SMOTE
-smote = SMOTE(sampling_strategy='auto')
+smote = SMOTE(sampling_strategy=0.25)
 X_smote, Y_smote = smote.fit_resample(train_X, new_var)
 #Résumé de la distribution des classes
 print(Counter(Y_smote)) 
@@ -107,7 +107,7 @@ test_Y=np.array([[1,0] if l==1 else [0,1] for l in new_test_Y])
 
 
 ##Normalisation des données
-train_X = X_smote.reshape(95000, 3072).astype('float32') 
+train_X = X_smote.reshape(59375, 3072).astype('float32') 
 test_X = test_X.reshape(10000, 3072).astype('float32')
 
 train_X /= 255.0
@@ -116,10 +116,17 @@ test_X /= 255.0
 
 
 #Arborescence du réseau de neurones
-
 model = Sequential()
+model.add(Dense(3072, activation='relu'))
+model.add(Dense(1024, activation='relu'))
+model.add(Dense(512, activation='relu'))
 model.add(Dense(256, activation='relu'))
 model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(4, activation='relu'))
 model.add(Dense(len(lb.classes_), activation='softmax'))
 
 #Nombre d'itérations
