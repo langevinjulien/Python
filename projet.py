@@ -149,6 +149,10 @@ print("Evaluation du modèle")
 predictions = model.predict(test_X,batch_size=32)
 print(classification_report(test_Y.argmax(axis=1), predictions.argmax(axis=1), target_names=liste_classes))
 
+#Sauvegarde du modèle
+model.save("C:/CIFAR100/projet.h5")
+print("Modèle sauvegardé")
+
 
 N = np.arange(0, epochs)
 plt.style.use("ggplot")
@@ -167,13 +171,6 @@ plt.legend()
 
 
 #A REGARDER SI CA FONCTIONNE APRES : J'ai pas du tout touché à cette partie
-
-
-
-#Sauvegarde du modèle
-model.save("C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/projet.h5")
-print("Modèle sauvegardé")
-
 
 ##Test du modèle sur d'autres images
 #Chargement du modèle
