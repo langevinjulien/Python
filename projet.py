@@ -1,5 +1,3 @@
-pip install scipy
-pip install imblearn
 import numpy as np
 import pandas as pd                                 #Bibliothèque utilisée pour la manipulation de données
 import tensorflow as tf
@@ -27,9 +25,9 @@ def unpickle(file):
     return cifar_dict
 
 
-meta = unpickle('C:/Users/Utilisateur/Documents/GitHub/Python/meta')
-train = unpickle('C:/Users/Utilisateur/Documents/GitHub/Python/train')
-test = unpickle('C:/Users/Utilisateur/Documents/GitHub/Python/test')
+meta = unpickle('C:/CIFAR100/meta')
+train = unpickle('C:/CIFAR100/train')
+test = unpickle('C:/CIFAR100/test')
 
 fine_label_names=[t.decode('utf8') for t in meta[b'fine_label_names']]
 
@@ -85,7 +83,7 @@ new_var.count(1)
 #nous avons choisi de faire du SMOTE.
 
                                          #SMOTE
-smote = SMOTE(sampling_strategy='auto')
+smote = SMOTE(sampling_strategy=0.25)
 X_smote, Y_smote = smote.fit_resample(train_X, new_var)
 #Résumé de la distribution des classes
 print(Counter(Y_smote)) 
@@ -109,34 +107,34 @@ test_Y=np.array([[1,0] if l==1 else [0,1] for l in new_test_Y])
 
 
 ##Normalisation des données
-train_X = X_smote.reshape(95000, 3072).astype('float32') 
+train_X = X_smote.reshape(59375, 3072).astype('float32') 
 test_X = test_X.reshape(10000, 3072).astype('float32')
+
 train_X /= 255.0
 test_X /= 255.0
 
 
 
 #Arborescence du réseau de neurones
-
 model = Sequential()
-model.add(Dense(1536, input_shape=(3072,), activation="relu"))
-model.add(Dense(768, activation='relu'))
-model.add(Dense(384, activation='relu'))
-model.add(Dense(192, activation='relu'))
-model.add(Dense(96, activation='relu'))
-model.add(Dense(48, activation='relu'))
-model.add(Dense(24, activation='relu'))
-model.add(Dense(12, activation='relu'))
-model.add(Dense(6, activation='relu'))
+model.add(Dense(3072, activation='relu'))
+model.add(Dense(1024, activation='relu'))
+model.add(Dense(512, activation='relu'))
+model.add(Dense(256, activation='relu'))
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(4, activation='relu'))
 model.add(Dense(len(lb.classes_), activation='softmax'))
 
 #Nombre d'itérations
-epochs = 10
+epochs = 100
 
 ##Compilation du modèle
 model.compile(loss="binary_crossentropy", optimizer="adam", #fonction de perte
               metrics=["accuracy"]) 
-
 
 ##Entraînement du modèle 
 H = model.fit(train_X, train_Y, epochs=epochs, batch_size=64, verbose=1, validation_split=0.2)
@@ -182,7 +180,7 @@ print("Modèle sauvegardé")
 model = load_model('C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/projet.h5')
 
 #Importation de l'image
-image = cv2.imread("C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/images/Mathieu.jpg") #Importation
+image = cv2.imread("C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/images/image1.jpg") #Importation
 image = cv2.resize(image, (32, 32))     #Changement des dimensions (pour qu'elles soient identiques à celles des images du modèle)
 
 #Transformation des pixels cela en float entre 0 et 1
@@ -197,6 +195,7 @@ plt.figure(figsize = [10,5])
 
 x = ["Humain","Non-humain"]
 y = [ preds[0][0], preds[0][1] ]
+#Avec preds[0][0] = probabilité d'être un garçon
 #preds[0][0] = probabilité d'être un humain
 #preds[0][1] = probabilité d'être un non-humain
 
