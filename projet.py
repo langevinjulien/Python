@@ -6,8 +6,7 @@ from imblearn.over_sampling import SMOTE
 from collections import Counter  
 from sklearn.preprocessing import LabelBinarizer    #Pour utiliser la fonction LabelBinarizer (ligne 23)
 from keras.models import Sequential                 
-from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D        
-from keras.optimizers import SGD                    #Pour utiliser l'algorithme de descente du gradient
+from keras.layers import Dense
 from sklearn.metrics import classification_report   #Pour l'évaluation du modèle
 from sklearn.metrics import confusion_matrix        #Matrice de confusion
 import matplotlib.pyplot as plt                     #Pour les graphiques
@@ -83,7 +82,7 @@ new_var.count(1)
 #nous avons choisi de faire du SMOTE.
 
                                          #SMOTE
-smote = SMOTE(sampling_strategy=0.25, random_state=2)
+smote = SMOTE(sampling_strategy=0.25, random_state=4)
 X_smote, Y_smote = smote.fit_resample(train_X, new_var)
 #Résumé de la distribution des classes
 print(Counter(Y_smote)) 
@@ -113,8 +112,9 @@ test_X = test_X.reshape(10000, 3072).astype('float32')
 train_X /= 255.0
 test_X /= 255.0
 
+                                                    #RESEAU DE NEURONES
 
-
+    
 #Arborescence du réseau de neurones
 model = Sequential()
 model.add(Dense(3072, activation='relu'))
@@ -168,12 +168,14 @@ plt.legend()
 
 
 
-##Test du modèle sur d'autres images
+                                            #TEST DU MODELE SUR D'AUTRES IMAGES
+
+
 #Chargement du modèle
 model = load_model('C:/CIFAR100/projet.h5')
 
 #Importation de l'image
-image = cv2.imread("C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/images/image1.jpg") #Importation
+image = cv2.imread("C:/CIFAR100/image1.jpg") #Importation
 image = cv2.resize(image, (32, 32))     #Changement des dimensions (pour qu'elles soient identiques à celles des images du modèle)
 
 #Transformation des pixels cela en float entre 0 et 1
@@ -188,7 +190,6 @@ plt.figure(figsize = [10,5])
 
 x = ["Humain","Non-humain"]
 y = [ preds[0][0], preds[0][1] ]
-#Avec preds[0][0] = probabilité d'être un garçon
 #preds[0][0] = probabilité d'être un humain
 #preds[0][1] = probabilité d'être un non-humain
 
