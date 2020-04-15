@@ -50,5 +50,10 @@ Nous avons ensuite appliqué notre modèle à quatre images. Nous joignons les p
 
 ![](https://github.com/langevinjulien/Python/blob/master/images/image4.jpg)  ![](https://github.com/langevinjulien/Python/blob/master/images/image4_proba.png)
 
+## Remarque
+
+Notre modèle pourrait cependant être amélioré en augmentant le nombre d'itérations afin de le rendre plus robuste. Ici nous n'avons fait que 10 itérations pour pouvoir tester différents modèles et nous ne vous avons présenter que le meilleur que nous avons trouvé. 
+
+<span style="color:red"> **ATTENTION** :  Plus le nombre d'itérations sera grand, et plus l'apprentissage de votre modèle prendra du temps. A savoir, pour le modèle présenté avec 10 itérations, cela prend entre 45min et 1h selon la puissance de votre ordinateur.</span>
 
 </div>
