@@ -83,7 +83,7 @@ new_var.count(1)
 #nous avons choisi de faire du SMOTE.
 
                                          #SMOTE
-smote = SMOTE(sampling_strategy=0.25)
+smote = SMOTE(sampling_strategy=0.25, random_state=2)
 X_smote, Y_smote = smote.fit_resample(train_X, new_var)
 #Résumé de la distribution des classes
 print(Counter(Y_smote)) 
@@ -130,7 +130,7 @@ model.add(Dense(4, activation='relu'))
 model.add(Dense(len(lb.classes_), activation='softmax'))
 
 #Nombre d'itérations
-epochs = 100
+epochs = 10
 
 ##Compilation du modèle
 model.compile(loss="binary_crossentropy", optimizer="adam", #fonction de perte
@@ -168,13 +168,9 @@ plt.legend()
 
 
 
-
-
-#A REGARDER SI CA FONCTIONNE APRES : J'ai pas du tout touché à cette partie
-
 ##Test du modèle sur d'autres images
 #Chargement du modèle
-model = load_model('C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/projet.h5')
+model = load_model('C:/CIFAR100/projet.h5')
 
 #Importation de l'image
 image = cv2.imread("C:/Users/Utilisateur/Documents/M2_SEMESTRE_2/4_Python/Projet/images/image1.jpg") #Importation
