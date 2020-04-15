@@ -1,3 +1,4 @@
+<div style="text-align: justify">
 Nous utilisons un réseau neuronal convolutif (CNN pour Convolutional
 Neural Networks en anglais). Il s’agit d’un type de réseau très utilisé
 pour la reconnaissance d’image.
@@ -62,3 +63,5 @@ cachées pour ce type de réseau est la fonction ReLu.
 
 Résulats
 --------
+
+</div>
