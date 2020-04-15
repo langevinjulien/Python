@@ -58,3 +58,10 @@ suivantes :
 -   pip install keras
 -   pip install matplotlib
 -   pip install opencv
+
+### Étape 4 :  
+Pour tester une imgae, mettez-la sous format JPG dans le dossier C:/CIFAR100 et nommez-la *image1*.
+
+
+
+Le programme a été testé sur Windows 10 + Python 3.7.4
